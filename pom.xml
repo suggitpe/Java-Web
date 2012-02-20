@@ -51,6 +51,7 @@
     <!-- This links up the main pom to the module poms -->
     <modules>
         <module>build-pipeline</module>
+        <module>sandbox</module>
     </modules>
 
     <build>
@@ -146,39 +147,32 @@
                         <webAppConfig>
                             <contextPath>/${project.artifactId}</contextPath>
                         </webAppConfig>
-                     <stopKey>foo</stopKey>
-                     <stopPort>10099</stopPort>
-                 </configuration>
-                 <executions>
-                     <execution>
-                         <id>start-jetty</id>
-                         <phase>pre-integration-test</phase>
-                         <goals>
-                             <goal>run-war</goal>
-                         </goals>
-                         <configuration>
-                             <scanIntervalSeconds>0</scanIntervalSeconds>
-                             <daemon>true</daemon>
-                         </configuration>
-                     </execution>
-                     <execution>
-                         <id>stop-jetty</id>
-                         <phase>post-integration-test</phase>
-                         <goals>
-                             <goal>stop</goal>
-                         </goals>
-                     </execution>
-                 </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.seleniumhq.selenium</groupId>
-                        <artifactId>selenium-java</artifactId>
-                        <version>${selenium.version}</version>
-                    </dependency>
-                </dependencies>
-             </plugin>
+                        <stopKey>foo</stopKey>
+                        <stopPort>10099</stopPort>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>start-jetty</id>
+                            <phase>pre-integration-test</phase>
+                            <goals>
+                                <goal>run-war</goal>
+                            </goals>
+                            <configuration>
+                                <scanIntervalSeconds>0</scanIntervalSeconds>
+                                <daemon>true</daemon>
+                            </configuration>
+                        </execution>
+                        <execution>
+                            <id>stop-jetty</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>stop</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
 
-             <!-- TOMCAT PLUGIN -->
+                <!-- TOMCAT PLUGIN -->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>tomcat-maven-plugin</artifactId>
@@ -377,6 +371,7 @@
 
         <plugins>
         </plugins>
+
     </build>
 
     <repositories>
@@ -444,8 +439,6 @@
             <artifactId>concordion-plus</artifactId>
             <scope>test</scope>
         </dependency>
-
-
     </dependencies>
 
     <!-- This is where we define all of the application dependencies version requirements -->
