@@ -26,28 +26,7 @@
         <jbehave.generateViewAfterStories>true</jbehave.generateViewAfterStories>
     </properties>
 
-    <!-- team developers -->
-    <developers>
-        <developer>
-            <id>suggitpe</id>
-            <name>Peter Suggitt</name>
-            <email>me@suggs.org.uk</email>
-            <roles>
-                <role>Design and Development</role>
-            </roles>
-            <timezone>0</timezone>
-        </developer>
-    </developers>
-
     <!-- here we define our own organsation (entered into the jar/ear manifests) -->
-    <organization>
-        <name>suggs.org</name>
-    </organization>
-
-    <!-- -->
-    <profiles>
-    </profiles>
-
     <!-- This links up the main pom to the module poms -->
     <modules>
         <module>build-pipeline</module>

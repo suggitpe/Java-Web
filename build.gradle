@@ -1,0 +1,45 @@
+subprojects { subprojects ->
+
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'idea'
+
+
+    group = 'org.suggs.build-sandbox'
+    version = '1.0-SNAPSHOT'
+    buildDir = 'target'
+
+    defaultTasks 'build'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+    }
+
+    dependencies {
+        compile     "org.slf4j:slf4j-api:$slf4jVersion"
+
+        testCompile "junit:junit:$junitVersion"
+        testRuntime "org.slf4j:slf4j-log4j12:$slf4jVersion"
+        testRuntime "log4j:log4j:$log4jVersion"
+        testRuntime "org.mockito:mockito-all:$mockitoVersion"
+        testRuntime "org.jbehave:jbehave-core:$jbehaveVersion"
+        testRuntime "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
+        testRuntime "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
+        testRuntime "org.concordion:concordion:$concordionVersion"
+        testRuntime "org.agileinsider:concordion-plus:$concordionPlusVersion"
+    }
+
+    manifest.mainAttributes( 
+        provider: 'gradle'
+    )
+
+}
+
+project("build-pipeline"){
+    
+    dependencies{
+        
+    }
+
+}
