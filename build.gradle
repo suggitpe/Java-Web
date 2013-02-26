@@ -5,6 +5,7 @@ subprojects { subprojects ->
     apply plugin: 'maven'
     apply plugin: 'idea'
     apply plugin: 'war'
+    apply plugin: 'jetty'
 
 
     group = 'org.suggs.build-sandbox'
@@ -17,7 +18,7 @@ subprojects { subprojects ->
     }
 
     dependencies {
-        compile     "org.slf4j:slf4j-api:$slf4jVersion"
+        compile "org.slf4j:slf4j-api:$slf4jVersion"
 
         testCompile "junit:junit:$junitVersion"
         testRuntime "org.slf4j:slf4j-log4j12:$slf4jVersion"
@@ -30,19 +31,32 @@ subprojects { subprojects ->
         testRuntime "org.agileinsider:concordion-plus:$concordionPlusVersion"
     }
 
-    manifest.mainAttributes( 
-        provider: 'gradle'
+    manifest.mainAttributes(
+            provider: 'gradle'
     )
 
 }
 
-project("build-pipeline"){
+project("build-pipeline") {
 
     description = "A working example of how to do functional testing against a web application"
-    dependencies{
+    dependencies {
         compile "org.springframework:spring-webmvc:$springVersion"
         compile "org.springframework:spring-oxm:$springVersion"
-        
+
     }
 
+}
+
+project("sandbox:sandbox-webservices:jax-ws-simple") {
+    subprojects {
+        //apply plugin: 'jaxws'
+    }
+}
+
+
+project("sandbox:sandbox-webservices:jax-rs-simple") {
+    subprojects {
+        //apply plugin: 'jaxrs'
+    }
 }
