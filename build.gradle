@@ -1,15 +1,15 @@
+defaultTasks 'clean', 'build'
+
 subprojects { subprojects ->
 
-    apply plugin: 'java'
     apply plugin: 'maven'
     apply plugin: 'idea'
+    apply plugin: 'war'
 
 
     group = 'org.suggs.build-sandbox'
     version = '1.0-SNAPSHOT'
     buildDir = 'target'
-
-    defaultTasks 'build'
 
     repositories {
         mavenLocal()
@@ -37,8 +37,11 @@ subprojects { subprojects ->
 }
 
 project("build-pipeline"){
-    
+
+    description = "A working example of how to do functional testing against a web application"
     dependencies{
+        compile "org.springframework:spring-webmvc:$springVersion"
+        compile "org.springframework:spring-oxm:$springVersion"
         
     }
 

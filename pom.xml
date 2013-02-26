@@ -14,9 +14,9 @@
     <inceptionYear>2007</inceptionYear>
 
     <properties>
-        <log4j.version>1.2.16</log4j.version>
-        <slf4j.version>1.6.1</slf4j.version>
-        <spring.version>3.0.5.RELEASE</spring.version>
+        <log4j.version>1.2.17</log4j.version>
+        <slf4j.version>1.7.2</slf4j.version>
+        <spring.version>3.1.4.RELEASE</spring.version>
         <selenium.version>2.13.0</selenium.version>
         <jbehave.core.version>3.5.4</jbehave.core.version>
         <jbehave.web.version>3.4.3</jbehave.web.version>
