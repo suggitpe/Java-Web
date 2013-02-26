@@ -1,4 +1,6 @@
-defaultTasks 'clean', 'build'
+allprojects{
+    defaultTasks 'clean', 'build'
+}
 
 subprojects { subprojects ->
 
