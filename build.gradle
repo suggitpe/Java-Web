@@ -5,7 +5,6 @@ allprojects {
 subprojects { subprojects ->
 
     apply plugin: 'maven'
-    apply plugin: 'idea'
     apply plugin: 'war'
     apply plugin: 'jetty'
 
@@ -26,17 +25,41 @@ subprojects { subprojects ->
         runtime "log4j:log4j:$log4jVersion"
 
         testCompile "junit:junit:$junitVersion"
-        testRuntime "org.mockito:mockito-all:$mockitoVersion"
-        testRuntime "org.jbehave:jbehave-core:$jbehaveVersion"
-        testRuntime "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
-        testRuntime "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
-        testRuntime "org.concordion:concordion:$concordionVersion"
-        testRuntime "org.agileinsider:concordion-plus:$concordionPlusVersion"
+        testCompile "org.mockito:mockito-all:$mockitoVersion"
+        testCompile "org.jbehave:jbehave-core:$jbehaveVersion"
+        testCompile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
+        testCompile "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
+        testCompile "org.concordion:concordion:$concordionVersion"
+        testCompile "org.concordion:concordion:$concordionVersion"
+        testCompile "org.agileinsider:concordion-plus:$concordionPlusVersion"
     }
 
     manifest.mainAttributes(
             provider: 'gradle'
     )
+
+    test {
+        include '**/*Test.*'
+        exclude '**/*WebTest.*'
+    }
+
+    task integrationTest(type: Test, dependsOn: test) {
+        include '**/*WebTest.*'
+
+        doFirst {
+            logger.quiet("Starting the jetty webserver with web app")
+            println "Starting jetty web application" 
+            jettyRun.execute()
+            println "allowing jetty to initialise"
+            sleep(3000)
+        }
+        doLast {
+            println "Stopping jetty web application"
+            jettyStop.execute()
+            println "allowing jetty to die gracefully"
+            sleep(3000)
+        }
+    }
 
 }
 
@@ -49,6 +72,15 @@ project("build-pipeline") {
 
         runtime "org.codehaus.jackson:jackson-mapper-asl:$jacksonMapperVersion"
         runtime "com.thoughtworks.xstream:xstream:$xstreamVersion"
+    }
+
+    jettyRun {
+        daemon = true
+        httpPort = 9098
+    }
+
+    jettyStop {
+        httpPort = 9099
     }
 
 }
