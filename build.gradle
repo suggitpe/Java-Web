@@ -34,7 +34,7 @@ subprojects { subprojects ->
         testCompile "org.agileinsider:concordion-plus:$concordionPlusVersion"
     }
 
-    manifest.mainAttributes(
+    manifest.mainAttributes (
             provider: 'gradle'
     )
 
@@ -43,24 +43,23 @@ subprojects { subprojects ->
         exclude '**/*WebTest.*'
     }
 
-    task integrationTest(type: Test, dependsOn: test) {
+    task webTest(type: Test, dependsOn: test) {
+
+        systemProperties 'concordion.output.dir': file("${buildDir}/concordion")
+
         include '**/*WebTest.*'
+        include '**/*Scenario.*'
 
         doFirst {
             logger.quiet("Starting the jetty webserver with web app")
-            println "Starting jetty web application" 
-            jettyRun.execute()
-            println "allowing jetty to initialise"
-            sleep(3000)
+            jettyRunWar.daemon = true
+            jettyRunWar.execute()
         }
         doLast {
-            println "Stopping jetty web application"
+            logger.quiet "Stopping jetty web application"
             jettyStop.execute()
-            println "allowing jetty to die gracefully"
-            sleep(3000)
         }
     }
-
 }
 
 project("build-pipeline") {
@@ -74,15 +73,9 @@ project("build-pipeline") {
         runtime "com.thoughtworks.xstream:xstream:$xstreamVersion"
     }
 
-    jettyRun {
-        daemon = true
-        httpPort = 9098
-    }
-
-    jettyStop {
-        httpPort = 9099
-    }
-
+    [jettyRun, jettyRunWar, jettyStop]*.httpPort = 9099
+    [jettyRun, jettyRunWar, jettyStop]*.stopPort = 9099
+    [jettyRun, jettyRunWar, jettyStop]*.stopKey = 'stopKey'
 }
 
 project("sandbox:sandbox-webservices:jax-ws-simple") {
