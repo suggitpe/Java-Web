@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee"
+         id="WebApp_ID"
+         version="2.5">
+
+    <display-name>Sandbox REST webservice</display-name>
+    <description>This is a sandbox implementation to demonstrate how to use REST webservices</description>
+
+    <servlet>
+        <servlet-name>Sandbox REST Service</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>com.sun.jersey.config.property.packages</param-name>
+            <param-value>org.suggs.sandbox.jaxrs.helloworld</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Sandbox REST Service</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>

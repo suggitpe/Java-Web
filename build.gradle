@@ -8,14 +8,17 @@ subprojects { subprojects ->
     apply plugin: 'war'
     apply plugin: 'jetty'
 
-
-    group = 'org.suggs.build-sandbox'
+    group = 'org.suggs.java-web'
     version = '1.0-SNAPSHOT'
     buildDir = 'target'
 
     repositories {
         mavenLocal()
         mavenCentral()
+    }
+
+    idea.module{
+        downloadSources = true
     }
 
     dependencies {
@@ -26,17 +29,15 @@ subprojects { subprojects ->
 
         testCompile "junit:junit:$junitVersion"
         testCompile "org.mockito:mockito-all:$mockitoVersion"
-        testCompile "org.jbehave:jbehave-core:$jbehaveVersion"
-        testCompile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
-        testCompile "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
-        testCompile "org.concordion:concordion:$concordionVersion"
-        testCompile "org.concordion:concordion:$concordionVersion"
-        testCompile "org.agileinsider:concordion-plus:$concordionPlusVersion"
     }
 
-    manifest.mainAttributes (
-            provider: 'gradle'
-    )
+    jar {
+        manifest {
+            attributes 'Implementation-Title': description,
+                    'Implementation-Version': version
+        }
+    }
+
 
     test {
         include '**/*Test.*'
@@ -68,25 +69,30 @@ project("build-pipeline") {
     dependencies {
         compile "org.springframework:spring-webmvc:$springVersion"
         compile "org.springframework:spring-oxm:$springVersion"
+        //compile "com.sun.jersey:jersey-bundle:1.1.7"
 
         runtime "org.codehaus.jackson:jackson-mapper-asl:$jacksonMapperVersion"
         runtime "com.thoughtworks.xstream:xstream:$xstreamVersion"
+
+        testCompile("org.concordion:concordion:$concordionVersion") { exclude group: "junit" }
+        testCompile "org.agileinsider:concordion-plus:$concordionPlusVersion"
+        testCompile "info.cukes:cucumber-junit:$cucumberVersion"
+        testCompile "info.cukes:cucumber-java:$cucumberVersion"
+        testCompile("org.jbehave:jbehave-core:$jbehaveVersion") { exclude group: "junit" }
+        testCompile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
+        testCompile "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
     }
 
-    [jettyRun, jettyRunWar, jettyStop]*.httpPort = 9099
-    [jettyRun, jettyRunWar, jettyStop]*.stopPort = 9099
-    [jettyRun, jettyRunWar, jettyStop]*.stopKey = 'stopKey'
+    //[jettyRun, jettyRunWar, jettyStop]*.httpPort = 10099
+    //[jettyRun, jettyRunWar, jettyStop]*.stopPort = 10099
+    //[jettyRun, jettyRunWar, jettyStop]*.stopKey = 'stopKey'
+    jettyRun.httpPort = 10099
 }
-
-project("sandbox:sandbox-webservices:jax-ws-simple") {
-    subprojects {
-        //apply plugin: 'jaxws'
-    }
-}
-
 
 project("sandbox:sandbox-webservices:jax-rs-simple") {
-    subprojects {
-        //apply plugin: 'jaxrs'
+
+    dependencies {
+        compile "com.sun.jersey:jersey-bundle:1.17.1"
     }
+
 }
