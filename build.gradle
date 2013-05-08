@@ -6,6 +6,7 @@ subprojects { subprojects ->
 
     apply plugin: 'maven'
     apply plugin: 'war'
+    apply plugin: 'idea'
     apply plugin: 'jetty'
 
     group = 'org.suggs.java-web'
