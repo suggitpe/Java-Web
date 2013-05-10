@@ -1,3 +1,6 @@
+import static groovy.io.FileType.DIRECTORIES
+
+
 allprojects {
     defaultTasks 'clean', 'build'
 }
@@ -18,11 +21,47 @@ subprojects { subprojects ->
         mavenCentral()
     }
 
-    idea.module{
+    idea.module {
         downloadSources = true
     }
 
+    configurations {
+        wsimport
+    }
+
+    ext.genDir = "$buildDir/generated-src"
+    sourceSets.main.java.srcDirs += genDir
+
+    task wsimport(dependsOn: processResources) {
+        ext.thepackage = 'org.suggs.ws'
+        doLast {
+            file(genDir).mkdirs()
+            sourceSets.main.output.classesDir.mkdirs()
+
+            ant.taskdef(
+                    name: 'wsimport',
+                    classname: 'com.sun.tools.ws.ant.WsImport',
+                    classpath: configurations.wsimport.asPath
+            )
+
+            sourceSets.main.output.resourcesDir.eachFileRecurse(DIRECTORIES) {
+                it.eachFileMatch(~/.*\.wsdl/) { File file ->
+                    println("Running wsimport for ${file}")
+                    ant.wsimport(
+                            keep: true,
+                            package: thepackage,
+                            wsdl: file,
+                            destDir: sourceSets.main.output.classesDir,
+                            sourcedestdir: genDir
+                    )
+                }
+            }
+        }
+    }
+
     dependencies {
+        wsimport "com.sun.xml.ws:jaxws-tools:2.1.4"
+
         compile "org.slf4j:slf4j-api:$slf4jVersion"
 
         runtime "org.slf4j:slf4j-log4j12:$slf4jVersion"
@@ -70,7 +109,6 @@ project("build-pipeline") {
     dependencies {
         compile "org.springframework:spring-webmvc:$springVersion"
         compile "org.springframework:spring-oxm:$springVersion"
-        //compile "com.sun.jersey:jersey-bundle:1.1.7"
 
         runtime "org.codehaus.jackson:jackson-mapper-asl:$jacksonMapperVersion"
         runtime "com.thoughtworks.xstream:xstream:$xstreamVersion"
@@ -91,9 +129,13 @@ project("build-pipeline") {
 }
 
 project("sandbox:sandbox-webservices:jax-rs-simple") {
-
     dependencies {
         compile "com.sun.jersey:jersey-bundle:1.17.1"
     }
-
 }
+
+project("sandbox:sandbox-webservices:jax-ws-simple:client") {
+    wsimport.thepackage = 'com.foo.bar'
+    compileJava.dependsOn wsimport
+}
+

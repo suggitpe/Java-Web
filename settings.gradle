@@ -1,2 +1,4 @@
 include "build-pipeline",
-        "sandbox:sandbox-webservices:jax-rs-simple"
+        "sandbox:sandbox-webservices:jax-rs-simple",
+        "sandbox:sandbox-webservices:jax-ws-simple",
+        "sandbox:sandbox-webservices:jax-ws-simple:client"
