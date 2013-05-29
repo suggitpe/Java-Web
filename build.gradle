@@ -90,23 +90,24 @@ subprojects { subprojects ->
         exclude '**/*WebTest.*'
     }
 
-    task webTest(type: Test, dependsOn: test) {
+    jettyRunWar {
+        daemon = true
+        httpPort = 10989    }
+
+    task webTest(type: Test, dependsOn: jettyRunWar) {
 
         systemProperties 'concordion.output.dir': file("${buildDir}/concordion")
 
         include '**/*WebTest.*'
         include '**/*Scenario.*'
 
-        doFirst {
-            logger.quiet("Starting the jetty webserver with web app")
-            jettyRunWar.daemon = true
-            jettyRunWar.execute()
-        }
         doLast {
             logger.quiet "Stopping jetty web application"
             jettyStop.execute()
         }
     }
+
+
 }
 
 project("build-pipeline") {
@@ -128,10 +129,9 @@ project("build-pipeline") {
         testCompile "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
     }
 
-    //[jettyRun, jettyRunWar, jettyStop]*.httpPort = 10099
-    //[jettyRun, jettyRunWar, jettyStop]*.stopPort = 10099
-    //[jettyRun, jettyRunWar, jettyStop]*.stopKey = 'stopKey'
-    jettyRun.httpPort = 10099
+    [jettyRun,jettyRunWar,jettyStop]*.httpPort = 10099
+    [jettyRun,jettyRunWar,jettyStop]*.stopPort = 10099
+    [jettyRun,jettyRunWar,jettyStop]*.stopKey = 'stopKey'
 }
 
 project("sandbox:sandbox-webservices:jax-rs-simple") {
