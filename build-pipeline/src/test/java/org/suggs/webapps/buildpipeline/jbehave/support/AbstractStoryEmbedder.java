@@ -1,8 +1,5 @@
 package org.suggs.webapps.buildpipeline.jbehave.support;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.jbehave.core.InjectableEmbedder;
 import org.jbehave.core.annotations.Configure;
 import org.jbehave.core.annotations.UsingEmbedder;
@@ -15,6 +12,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.jbehave.core.io.CodeLocations.codeLocationFromClass;
 
@@ -30,25 +30,25 @@ import static org.jbehave.core.io.CodeLocations.codeLocationFromClass;
 @Configure(storyLoader = LoadFromURL.class,
         stepPatternParser = RegexPrefixCapturingPatternParser.class,
         storyReporterBuilder = BuildPipelineStoryReporterBuilder.class,
-        parameterConverters = { BuildPipelineDateParameterConverter.class })
+        parameterConverters = {BuildPipelineDateParameterConverter.class})
 public abstract class AbstractStoryEmbedder extends InjectableEmbedder {
 
     @SuppressWarnings("unused")
-    private static final Logger LOG = LoggerFactory.getLogger( AbstractStoryEmbedder.class );
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractStoryEmbedder.class);
 
-    private static final String STORY_LOCATION = codeLocationFromClass( AbstractStoryEmbedder.class ).getFile();
+    private static final String STORY_LOCATION = codeLocationFromClass(AbstractStoryEmbedder.class).getFile();
 
     @Test
     @Override
     public void run() throws Throwable {
+        System.out.println("Looking for stories in [" + STORY_LOCATION + "]");
         StoryFinder finder = new StoryFinder();
-        List<String> urls = finder.findPaths( STORY_LOCATION,
-                Arrays.asList( createStoryIncludes() ),
-                Arrays.asList( createStoryExcludes() ), "file:" + STORY_LOCATION );
-        LOG.info( "Running stories: [" + urls + "]" );
-        injectedEmbedder().runStoriesAsPaths( urls );
+        List<String> urls = finder.findPaths(STORY_LOCATION,
+                Arrays.asList(createStoryIncludes()),
+                Arrays.asList(createStoryExcludes()), "file:" + STORY_LOCATION);
+        LOG.info("Running stories: [" + urls + "]");
+        injectedEmbedder().runStoriesAsPaths(urls);
     }
-
 
     /**
      * This is the delegation to the test class to provide the search string to find the stories.
