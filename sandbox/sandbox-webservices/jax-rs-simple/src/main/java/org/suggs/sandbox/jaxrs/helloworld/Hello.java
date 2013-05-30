@@ -6,6 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Path("/hello")
+@org.springframework.context.annotation.Configuration
 public class Hello {
 
     @GET
