@@ -92,7 +92,8 @@ subprojects { subprojects ->
 
     jettyRunWar {
         daemon = true
-        httpPort = 10989    }
+        httpPort = 10989
+    }
 
     task webTest(type: Test, dependsOn: jettyRunWar) {
 
