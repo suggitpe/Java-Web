@@ -145,14 +145,21 @@ project("sandbox:sandbox-webservices:jax-ws-simple:client") {
 project("sandbox:sandbox-webservices:jax-ws-simple:service") {
 }
 
-project("sandbox:sandbox-webapps:jbehaveweb-test-webapp"){
-    dependencies{
+project("sandbox:sandbox-webapps:jbehaveweb-test-webapp") {
+    dependencies {
         testCompile "org.jbehave.web:jbehave-web-selenium:$jbehaveWebVersion"
     }
 }
 
-project("sandbox:sandbox-webapps:selenium-test-webapp"){
-    dependencies{
+project("sandbox:sandbox-webapps:selenium-test-webapp") {
+    dependencies {
         testCompile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
+    }
+}
+
+project("sandbox:sandbox-webapps:spring-mvc-persistent-webapp") {
+    dependencies {
+        compile "org.springframework:spring-webmvc:$springVersion"
+        compile "org.springframework:spring-oxm:$springVersion"
     }
 }

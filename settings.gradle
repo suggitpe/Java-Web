@@ -2,6 +2,7 @@ include "build-pipeline",
         "sandbox:sandbox-webapps:default-webapp",
         "sandbox:sandbox-webapps:jbehaveweb-test-webapp",
         "sandbox:sandbox-webapps:selenium-test-webapp",
+        "sandbox:sandbox-webapps:spring-mvc-persistent-webapp",
         "sandbox:sandbox-webservices:jax-rs-simple",
         "sandbox:sandbox-webservices:jax-ws-simple:client",
         "sandbox:sandbox-webservices:jax-ws-simple:service"
