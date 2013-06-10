@@ -58,11 +58,10 @@ subprojects { subprojects ->
         }
     }
 
-    task wsgen(dependsOn: processResources){
-        doLast{
+    task wsgen(dependsOn: processResources) {
+        doLast {
             sourceSets.main.java.resourcesDir.mkdirs()
         }
-
     }
 
     dependencies {
@@ -96,8 +95,11 @@ subprojects { subprojects ->
     }
 
     task webTest(type: Test, dependsOn: jettyRunWar) {
-
         systemProperties 'concordion.output.dir': file("${buildDir}/concordion")
+
+        [jettyRun, jettyRunWar, jettyStop]*.httpPort = 10099
+        [jettyRun, jettyRunWar, jettyStop]*.stopPort = 10099
+        [jettyRun, jettyRunWar, jettyStop]*.stopKey = 'stopKey'
 
         include '**/*WebTest.*'
         include '**/*Scenario.*'
@@ -107,8 +109,6 @@ subprojects { subprojects ->
             jettyStop.execute()
         }
     }
-
-
 }
 
 project("build-pipeline") {
@@ -129,10 +129,6 @@ project("build-pipeline") {
         testCompile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
         testCompile "org.seleniumhq.selenium:selenium-api:$seleniumVersion"
     }
-
-    [jettyRun,jettyRunWar,jettyStop]*.httpPort = 10099
-    [jettyRun,jettyRunWar,jettyStop]*.stopPort = 10099
-    [jettyRun,jettyRunWar,jettyStop]*.stopKey = 'stopKey'
 }
 
 project("sandbox:sandbox-webservices:jax-rs-simple") {
@@ -147,4 +143,16 @@ project("sandbox:sandbox-webservices:jax-ws-simple:client") {
 }
 
 project("sandbox:sandbox-webservices:jax-ws-simple:service") {
+}
+
+project("sandbox:sandbox-webapps:jbehaveweb-test-webapp"){
+    dependencies{
+        testCompile "org.jbehave.web:jbehave-web-selenium:$jbehaveWebVersion"
+    }
+}
+
+project("sandbox:sandbox-webapps:selenium-test-webapp"){
+    dependencies{
+        testCompile "org.seleniumhq.selenium:selenium-java:$seleniumVersion"
+    }
 }
