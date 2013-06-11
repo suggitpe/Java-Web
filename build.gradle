@@ -161,5 +161,9 @@ project("sandbox:sandbox-webapps:spring-mvc-persistent-webapp") {
     dependencies {
         compile "org.springframework:spring-webmvc:$springVersion"
         compile "org.springframework:spring-oxm:$springVersion"
+        compile "org.hibernate:hibernate-core:3.6.5.Final"
+        compile "org.hibernate:hibernate-annotations:3.6.5-Final"
+
+
     }
 }
