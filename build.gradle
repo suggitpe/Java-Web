@@ -5,6 +5,10 @@ allprojects {
     defaultTasks 'clean', 'build'
 }
 
+task wrapper(type: Wrapper){
+    gradleVersion = '1.6'
+}
+
 subprojects { subprojects ->
 
     apply plugin: 'war'
@@ -161,8 +165,18 @@ project("sandbox:sandbox-webapps:spring-mvc-persistent-webapp") {
     dependencies {
         compile "org.springframework:spring-webmvc:$springVersion"
         compile "org.springframework:spring-oxm:$springVersion"
+        compile "org.springframework:spring-orm:$springVersion"
         compile "org.hibernate:hibernate-core:3.6.5.Final"
-        compile "org.hibernate:hibernate-annotations:3.6.5-Final"
+        compile "org.hibernate:hibernate-annotations:3.5.6-Final"
+
+        runtime "commons-dhcp:commons-dhcp:"
+        runtime "javassist:javassist:"
+        runtime "com.oracle:ojdbc14:"
+        runtime "org.codehaus.jackson:jackson-mapper-asl:"
+
+        testCompile "org.springframework:spring-test"
+        testCompile "org.jbehave:jbehave-spring:"
+        testCompile "org.jbehave.web:jbehave-web-selenium:"
 
 
     }
