@@ -18,7 +18,6 @@ subprojects { subprojects ->
 
     group = 'org.suggs.java-web'
     version = '1.0-SNAPSHOT'
-    buildDir = 'target'
 
     repositories {
         mavenLocal()
